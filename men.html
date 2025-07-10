@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Men's Services & Prices</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
+      color: #333;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 1rem auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      column-count: 2;
+      column-gap: 40px;
+      text-align: left;
+    }
+    ul li {
+      padding: 0.3rem 0;
+    }
+    .new {
+      font-family: "Michroma", sans-serif;
+      font-size: 1.8rem;
+      color: #333;
+    }
+    .book-appointment-btn, .back-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: #333;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      display: inline-block;
+      margin-top: 2rem;
+    }
+    .book-appointment-btn:hover,
+    .back-btn:hover {
+      background-color: #555;
+    }
+    .next-arrow {
+      position: fixed;
+      left: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+    .next-arrow img {
+      width: 48px;
+      height: auto;
+      cursor: pointer;
+      animation: bounce 1.2s infinite;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .next-arrow img:hover {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+
+</style>
+</head>
+<body>
+
+  <div class="new">Men's Services &amp; Prices</div>
+
+    
+   {% for category, services in grouped_services.items() %}
+  <div class="card">
+    <h3>{{ category }}</h3>
+    <ul>
+      {% for service in services %}
+        <li>{{ service.name }} – ₹{{ '%.2f' | format(service.price) }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endfor %}
+
+
+  <!-- Book Appointment Button -->
+  <div style="text-align:center;">
+    <a href="{{ url_for('appointment_page') }}" class="book-appointment-btn" id="bookAppointmentBtn">Book Appointment</a>
+  </div>
+
+  <!-- Back Arrow -->
+  <a href="{{ url_for('categories') }}" class="next-arrow">
+    <img src="{{ url_for('static', filename='images/leftarrow.png') }}" alt="Back to Categories" />
+  </a>
+
+  <script>
+    document.getElementById("bookAppointmentBtn").addEventListener("click", () => {
+      // JS preserved for future logic, if needed
+    });
+  </script>
+</body>
+</html>

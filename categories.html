@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Our Categories</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/categories.css') }}"> <!-- separate styles for this page -->
+</head>
+<body>
+
+<!-- Fixed Navbar -->
+<nav class="navbar">
+        <div class="michroma-regular">Style Avenue</div>
+        <div class="nav-links">
+            <!-- Parent container for dropdown -->
+            <div class="dropdown">
+                <a href="#">Services</a>
+                <!-- Dropdown menu -->
+                <div class="dropdown-menu">
+                    <div class="service-column">
+                        <h3>Hair Services</h3>
+                        <ul>
+                            <li>Haircuts</li>
+                            <li>Styling</li>
+                            <li>Hair Coloring</li>
+                            <li>Hair Treatments</li>
+                            <li>Hair Extention</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Nail Services</h3>
+                        <ul>
+                            <li>Manicures</li>
+                            <li>Pedicures</li>
+                            <li>Nail Art</li>
+                            <li>Nail Extention</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Skin Services</h3>
+                        <ul>
+                            <li>Facials</li>
+                            <li>Waxing</li>
+                            <li>Threading</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Other</h3>
+                        <ul>
+                            <li>Makeup</li>
+                            <li>Barber Services</li>
+                            <li>Consultations</li>
+                            <li>Specialty Services:</li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          
+                 <div class="dropdown">
+            <a href="#">Contact Us</a>
+            <div class="dropdown-menu contact-menu">
+                <p><strong>📞 Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>📧 Email:</strong> info@styleavenue.com</p>
+                <p><strong>🕑 Hours:</strong> Mon–Sat 9:00 AM – 7:00 PM</p>
+            </div>
+        </div>
+
+           <a href="{{ url_for('appointment_page') }}">Book Appointment</a>
+
+
+        </div>
+    </nav>
+<div class="page-title" id="font">Our Categories</div>
+
+<div class="image-container">
+  <!-- Women's Category -->
+  <div class="category-column">
+    <a href="{{ url_for('woman') }}">
+  <img src="{{ url_for('static', filename='images/woman.jpg') }}" alt="Woman's Services" />
+</a>
+
+     <p class="quotesfont">"Empower your beauty with every look."</p>
+  </div>
+
+  <!-- Men's Category -->
+  <div class="category-column">
+  <a href="{{ url_for('men') }}">
+    <img src="{{ url_for('static', filename='images/man.jpg') }}" alt="Men's Services" />
+  </a>
+  <p class="quotesfont">"Refined style, effortless confidence."</p>
+</div>
+</div>
+<a href="{{ url_for('index') }}" class="next-arrow">
+    <img src="{{ url_for('static', filename='images/leftarrow.png') }}" alt="Back" />
+</a>
+
+
+</body>
+</html>
+
