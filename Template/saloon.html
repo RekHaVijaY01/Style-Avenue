@@ -1,0 +1,212 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Style Avenue</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="michroma-regular">Style Avenue</div>
+        <div class="nav-links">
+            <!-- Parent container for dropdown -->
+            <div class="dropdown">
+                <!-- ✅ Updated link to categories page -->
+                <a href="{{ url_for('categories') }}">Services</a>
+                <!-- Dropdown menu -->
+                <div class="dropdown-menu">
+                    <div class="service-column">
+                        <h3>Hair Services</h3>
+                        <ul>
+                            <li>Haircuts</li>
+                            <li>Styling</li>
+                            <li>Hair Coloring</li>
+                            <li>Hair Treatments</li>
+                            <li>Hair Extension</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Nail Services</h3>
+                        <ul>
+                            <li>Manicures</li>
+                            <li>Pedicures</li>
+                            <li>Nail Art</li>
+                            <li>Nail Extension</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Skin Services</h3>
+                        <ul>
+                            <li>Facials</li>
+                            <li>Waxing</li>
+                            <li>Threading</li>
+                        </ul>
+                    </div>
+                    <div class="service-column">
+                        <h3>Other</h3>
+                        <ul>
+                            <li>Makeup</li>
+                            <li>Barber Services</li>
+                            <li>Consultations</li>
+                            <li>Specialty Services</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="dropdown">
+                <a href="#">Contact Us</a>
+                <div class="dropdown-menu contact-menu">
+                    <p><strong>📞 Phone:</strong> +1 (555) 123-4567</p>
+                    <p><strong>📧 Email:</strong> info@styleavenue.com</p>
+                    <p><strong>🕑 Hours:</strong> Mon–Sat 9:00 AM – 7:00 PM</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('appointment_page') }}">Book Appointment</a>
+            <a href="#" onclick="showAdminLogin()">Admin</a>
+        </div>
+        
+    </nav>
+
+
+<div id="adminModal" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%, -30%);
+     background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px #999; z-index:999;">
+  <h3>Admin Login</h3>
+  <input type="text" id="admin-username" placeholder="Username"><br><br>
+  <input type="password" id="admin-password" placeholder="Password"><br><br>
+  <button onclick="adminLogin()">Login</button>
+  <button onclick="closeAdminLogin()">Cancel</button>
+  <p id="admin-login-error" style="color:red;"></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Static background with quote -->
+    <section class="static-background">
+       
+    </section>
+
+    <!-- ✅ Updated next-arrow link to categories -->
+    <a href="{{ url_for('categories') }}" class="next-arrow">
+        <img src="{{ url_for('static', filename='images/next.png') }}" alt="Next" />
+    </a>
+   <!-- Salon Section -->
+<section class="salon-section">
+
+  <!-- Left column -->
+  <div class="salon-left">
+    <h2 class="salon-text">Indulge in the<br>Extraordinary</h2>
+    <p class="hi">
+      Your hair is your crown, so why not treat it like one? Healthy, vibrant hair begins with simple daily habits that make a world of difference. Keep your hair hydrated by choosing gentle shampoos and nourishing conditioners that lock in moisture and restore strength.
+    </p>
+  </div>
+
+  <!-- Right column with video -->
+  <div class="salon-video">
+    <video autoplay muted loop playsinline style="width:100%; border-radius:10px;">
+      <source src="{{ url_for('static', filename='images/vedio1.mp4') }}" type="video/mp4">
+    </video>
+   
+  </div>
+
+
+</section>
+
+<section class="salon-section">
+<div class="salon-video">
+    <video autoplay muted loop playsinline style="width:100%; border-radius:10px;">
+      <source src="{{ url_for('static', filename='images/vedio2.mp4') }}" type="video/mp4">
+    </video>
+   
+  </div>
+
+  <!-- Left column -->
+  <div class="salon-left">
+    <h2 class="salon-text">Your Palace of<br> Beauty</h2>
+    <p class="hi">
+      Step into a world where luxury meets self-care — your personal sanctuary for relaxation, rejuvenation, and style. From personalized hair treatments to soothing skin therapies, every visit is designed to enhance your natural beauty and leave you feeling refreshed.
+    </p>
+  </div>
+</section>
+<div><!-- Fixed portrait background section -->
+<section class="fixed-bg-section">
+  <!-- Nothing inside this section; image is the background -->
+</section>
+
+
+
+ <section class="features-section">
+    <h2 class="michroma-regular">Beauty Retreat</h2>
+    <div class="features-grid">
+      <div class="feature-box">
+        <img id="mi"src="{{ url_for('static', filename='images/emoji1.jpeg') }}" alt="Hair Icon" />
+
+        <h3>Hair</h3>
+        <p>Hair stylists believe beauty is different for every person, so they tailor-make a look to suit you.</p>
+      </div>
+      <div class="feature-box">
+         <img src="{{ url_for('static', filename='images/emoji2.jpeg') }}" alt="Cosmetology Icon" />
+        
+        <h3>Cosmetology</h3>
+        <p>Your path to radiant skin starts here with top-notch advanced services customized for you.</p>
+      </div>
+      <div class="feature-box">
+         <img src="{{ url_for('static', filename='images/emoji3.jpeg') }}" alt="Make-Up Icon" />
+        
+        <h3>Make-Up</h3>
+        <p>Step into the spotlight with makeup that highlights your unique style.</p>
+      </div>
+      <div class="feature-box">
+         <img src="{{ url_for('static', filename='images/emoji4.jpeg') }}" alt="Nails Icon" />
+        
+        <h3>Nails</h3>
+        <p>Our expert team of nail technicians craft masterpieces with every stroke.</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  function showAdminLogin() {
+    document.getElementById('adminModal').style.display = 'block';
+  }
+
+  function closeAdminLogin() {
+    document.getElementById('adminModal').style.display = 'none';
+    document.getElementById('admin-login-error').innerText = '';
+  }
+
+  function adminLogin() {
+    const username = document.getElementById('admin-username').value;
+    const password = document.getElementById('admin-password').value;
+
+    fetch('/admin_login_ajax', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        window.location.href = '/admin/dashboard';  // Redirect to admin page
+      } else {
+        document.getElementById('admin-login-error').innerText = data.message || "Login failed.";
+      }
+    })
+    .catch(err => {
+      document.getElementById('admin-login-error').innerText = "Server error.";
+    });
+  }
+</script>
+
+
+</html>
+

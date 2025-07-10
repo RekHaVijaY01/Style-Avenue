@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Appointment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .checkbox-group, .subservice-group {
+      margin: 0.5rem 0;
+    }
+    button {
+      margin-top: 1.5rem;
+      background: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    .next-arrow {
+      position: fixed;
+      left: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+    .next-arrow img {
+      width: 48px;
+      height: auto;
+      cursor: pointer;
+      animation: bounce 1.2s infinite;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      max-width: 90%;
+      width: 400px;
+    }
+    .popup h2 { color: #333; margin-top: 0; }
+    .popup p { margin-top: 10px; color: #555; }
+    .popup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .popup button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Book an Appointment</h2>
+    <form id="appointment-form" action="/book_appointment" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+
+      <label>Phone:</label>
+      <input type="tel" name="phone" pattern="[0-9]{10}" required>
+
+      <label>Gender:</label>
+      <select name="gender" id="gender" required>
+        <option value="" disabled selected>--Select--</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+      </select>
+
+      <label>Services:</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="services" value="hair"> Hair</label>
+        <label><input type="checkbox" name="services" value="skin"> Skin</label>
+        <label><input type="checkbox" name="services" value="nail"> Nail</label>
+        <label><input type="checkbox" name="services" value="others"> Others</label>
+      </div>
+
+      <div id="subservices-container"></div>
+
+      <label>Date:</label>
+      <input type="date" name="date" required>
+
+      <label>Time:</label>
+      <div style="display: flex; gap: 0.5rem;">
+        <select name="hour" required>
+          <option value="" disabled selected>HH</option>
+          <option>09</option><option>10</option><option>11</option><option>12</option>
+          <option>01</option><option>02</option><option>03</option><option>04</option>
+          <option>05</option><option>06</option><option>07</option>
+        </select>
+        <select name="minute" required>
+          <option value="" disabled selected>MM</option>
+          <option>00</option><option>15</option><option>30</option><option>45</option>
+        </select>
+        <select name="ampm" required>
+          <option value="" disabled selected>AM/PM</option>
+          <option>AM</option><option>PM</option>
+        </select>
+      </div>
+
+      <p id="price-output" style="font-weight: bold; color: green;">💰 Total: ₹0</p>
+      <input type="hidden" name="total_amount" id="total-amount-input" />
+
+
+      <button type="button" id="open-payment-modal">Pay Now</button>
+
+      <button type="submit">Book Now</button>
+      <button type="button" id="genderPageBtn">View Price</button>
+    </form>
+
+    <a href="{{ url_for('categories') }}" class="next-arrow">
+      <img src="{{ url_for('static', filename='images/leftarrow.png') }}" alt="Back" />
+    </a>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000aa;">
+    <div style="background:white; padding:20px; margin:10% auto; width:300px; position:relative;">
+      <h3>Select Payment Method</h3>
+
+      <select id="payment-method" required>
+        <option value="">-- Choose Method --</option>
+        <option value="upi">UPI</option>
+        <option value="gpay">GPay</option>
+        <option value="credit">Credit Card</option>
+        <option value="debit">Debit Card</option>
+      </select><br><br>
+
+      <input type="text" id="payment-number" placeholder="Enter payment ID/card number" /><br><br>
+
+      <button id="pay-button" disabled>Pay ₹100</button>
+      <p id="payment-message"></p>
+
+      <button onclick="closePaymentModal()" style="position:absolute; top:5px; right:5px;">✖</button>
+    </div>
+  </div>
+
+  <!-- Thank You Popup -->
+  <div id="thankyou-popup" class="popup" style="display: none;">
+    <h2>✅ Thank you for choosing us!</h2>
+    <p>Your appointment has been successfully booked.</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+  <script>
+   window.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.querySelector('input[name="date"]');
+    if (dateInput) {
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const dd = String(today.getDate()).padStart(2, '0');
+      const minDate = `${yyyy}-${mm}-${dd}`;
+
+      // Set the minimum date on the input
+      dateInput.setAttribute('min', minDate);
+    }
+  });
+    let paymentSuccess = false;
+
+    const genderEl = document.getElementById('gender');
+    const serviceCheckboxes = document.querySelectorAll('input[name="services"]');
+    const subservicesContainer = document.getElementById('subservices-container');
+
+    const servicesData = {
+      female: {
+        hair: ["Haircut", "Styling", "Hair Coloring", "Hair Extensions", "Hair Treatments"],
+        skin: ["Facials", "Waxing", "Threading"],
+        nail: ["Manicure", "Pedicure", "Nail Art", "Nail Extensions"],
+        others: ["Makeup", "Bridal Makeup", "Packages"]
+      },
+      male: {
+        hair: ["Haircuts", "Styling", "Hair Coloring", "Haircut + Beard Trim/Shave", "Scalp Treatments"],
+        skin: ["Facials", "Waxing", "Threading"],
+        nail: ["Manicure", "Pedicure"],
+        others: ["Grooming Package", "Relax & Renew"]
+      }
+    };
+
+    function renderSubservices() {
+      const gender = genderEl.value;
+      subservicesContainer.innerHTML = "";
+      if (!gender) return;
+
+      serviceCheckboxes.forEach(cb => {
+        if (cb.checked) {
+          const service = cb.value;
+          const subservices = servicesData[gender][service] || [];
+
+          if (subservices.length > 0) {
+            const group = document.createElement("div");
+            group.classList.add("subservice-group");
+
+            const heading = document.createElement("label");
+            heading.textContent = `${service.toUpperCase()} Sub-services:`;
+            group.appendChild(heading);
+
+            subservices.forEach(sub => {
+              const label = document.createElement("label");
+              label.innerHTML = `<input type="checkbox" name="sub_services[]" value="${sub}"> ${sub}`;
+              group.appendChild(label);
+            });
+
+            subservicesContainer.appendChild(group);
+          }
+        }
+      });
+    }
+
+    genderEl.addEventListener("change", renderSubservices);
+    serviceCheckboxes.forEach(cb => cb.addEventListener("change", renderSubservices));
+
+    document.getElementById('genderPageBtn').addEventListener('click', function () {
+      const gender = genderEl.value;
+      const appointmentData = {
+        name: document.querySelector('input[name="name"]').value,
+        phone: document.querySelector('input[name="phone"]').value,
+        gender: gender,
+        services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value),
+        subServices: Array.from(document.querySelectorAll('input[name="sub_services[]"]:checked')).map(cb => cb.value),
+        date: document.querySelector('input[name="date"]').value,
+        hour: document.querySelector('select[name="hour"]').value,
+        minute: document.querySelector('select[name="minute"]').value,
+        ampm: document.querySelector('select[name="ampm"]').value
+      };
+
+      sessionStorage.setItem("appointmentData", JSON.stringify(appointmentData));
+
+      if (gender === "female") {
+        window.location.href = "/woman";
+      } else if (gender === "male") {
+        window.location.href = "/men";
+      } else {
+        alert("Please select a gender to view price.");
+      }
+    });
+
+    document.getElementById("open-payment-modal").addEventListener("click", () => {
+      document.getElementById("payment-modal").style.display = "block";
+    });
+
+    function closePaymentModal() {
+      document.getElementById("payment-modal").style.display = "none";
+    }
+
+    document.getElementById('payment-number').addEventListener('input', function () {
+      const method = document.getElementById('payment-method').value;
+      const value = this.value.trim();
+      const errorEl = document.getElementById('payment-message');
+      const payBtn = document.getElementById('pay-button');
+
+      let isValid = false;
+
+      if (method === 'credit' || method === 'debit') {
+        isValid = /^\d{12,19}$/.test(value);
+      }  else if (method === 'upi' || method === 'gpay') {
+  isValid = /^[\w.\-]{2,256}@[a-zA-Z]{2,64}$/.test(value) || /^[0-9]{10}$/.test(value);
+}
+
+      if (isValid) {
+        errorEl.textContent = '✅ Valid payment details.';
+        errorEl.style.color = 'green';
+        payBtn.disabled = false;
+      } else {
+        errorEl.textContent = '❌ Invalid payment details.';
+        errorEl.style.color = 'red';
+        payBtn.disabled = true;
+      }
+    });
+
+    document.getElementById("pay-button").addEventListener("click", () => {
+      document.getElementById("payment-message").textContent = "✅ Payment successful!";
+      document.getElementById("payment-message").style.color = "green";
+      paymentSuccess = true;
+      setTimeout(() => {
+        closePaymentModal();
+      }, 1000);
+    });
+
+document.getElementById("appointment-form").addEventListener("submit", function (e) {
+  if (!paymentSuccess) {
+    e.preventDefault();
+    alert("⚠️ Please complete payment before booking.");
+    return;
+  }
+
+  e.preventDefault(); // Prevent default for fetch
+  const formData = new FormData(this);
+
+  // ✅ Add payment data manually from modal inputs
+  const paymentMethod = document.getElementById("payment-method").value;
+  const paymentDetails = document.getElementById("payment-number").value;
+  formData.append("payment_method", paymentMethod);
+  formData.append("payment_details", paymentDetails);
+
+  fetch("/book_appointment", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      sessionStorage.clear();
+      document.getElementById("thankyou-popup").style.display = "block";
+      this.reset();
+    } else {
+      alert("Error: " + data.message);
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert("An error occurred.");
+  });
+});
+
+    function closePopup() {
+      window.location.href = "/";
+    }
+
+
+
+
+
+
+  function updateTotalPrice() {
+  const gender = document.getElementById('gender').value;
+  const selectedServices = Array.from(
+    document.querySelectorAll('input[name="sub_services[]"]:checked')
+  ).map(cb => cb.value);
+
+  const priceOutput = document.getElementById('price-output');
+  const hiddenInput = document.getElementById('total-amount-input');
+
+  if (!gender || selectedServices.length === 0) {
+    priceOutput.innerText = "💡 Select gender & services to see price.";
+    hiddenInput.value = ""; // Clear hidden field
+    return;
+  }
+
+  fetch('http://127.0.0.1:5000/get_total_price', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ gender, services: selectedServices })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      const total = data.total.toFixed(2);
+      priceOutput.innerText = `💰 Total: ₹${total}`;
+      hiddenInput.value = total;
+    } else {
+      priceOutput.innerText = "❌ Error fetching price.";
+      hiddenInput.value = "";
+    }
+  })
+  .catch(() => {
+    priceOutput.innerText = "🚫 Server error.";
+    hiddenInput.value = "";
+  });
+}
+
+
+
+
+
+
+
+
+    genderEl.addEventListener('change', updateTotalPrice);
+    serviceCheckboxes.forEach(cb => cb.addEventListener('change', updateTotalPrice));
+    document.getElementById('subservices-container').addEventListener('change', function (e) {
+      if (e.target.name === 'sub_services[]') {
+        updateTotalPrice();
+      }
+    });
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  const data = JSON.parse(sessionStorage.getItem("appointmentData"));
+  if (!data) return;
+
+  document.querySelector('input[name="name"]').value = data.name || "";
+  document.querySelector('input[name="phone"]').value = data.phone || "";
+  document.getElementById('gender').value = data.gender || "";
+
+  if (data.services) {
+    data.services.forEach(service => {
+      const checkbox = document.querySelector(`input[name="services"][value="${service}"]`);
+      if (checkbox) checkbox.checked = true;
+    });
+  }
+
+  if (typeof renderSubservices === "function") {
+    renderSubservices();  // Call this before setting subservices
+  }
+
+  setTimeout(() => {
+    if (data.subServices) {
+      data.subServices.forEach(sub => {
+        const checkbox = document.querySelector(`input[name="sub_services[]"][value="${sub}"]`);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+  }, 200);
+
+  document.querySelector('input[name="date"]').value = data.date || "";
+  document.querySelector('select[name="hour"]').value = data.hour || "";
+  document.querySelector('select[name="minute"]').value = data.minute || "";
+  document.querySelector('select[name="ampm"]').value = data.ampm || "";
+});
+
+
+
+
+
+  </script>
+</body>
+</html>
