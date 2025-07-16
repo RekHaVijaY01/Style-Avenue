@@ -8,11 +8,11 @@ from datetime import timedelta
 app = Flask(__name__)
 CORS(app)
 
-# 🔐 Secret key and session config
+
 app.secret_key = 'something_secure_123'  # Change this in production!
 app.permanent_session_lifetime = timedelta(minutes=30)
 
-# Database Configuration
+
 db_config = {
     'host': 'localhost',
     'user': 'root',
@@ -23,7 +23,7 @@ db_config = {
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
-# Routes
+
 @app.route('/')
 def index():
     return render_template('saloon.html')
@@ -45,13 +45,13 @@ def men():
     cursor.close()
     conn.close()
 
-    # Group by category
+   
     grouped_services = {}
     for service in services:
         category = service['category']
         grouped_services.setdefault(category, []).append(service)
 
-    # ✅ pass grouped_services to the template
+  
     return render_template("men.html", grouped_services=grouped_services)
 
 
@@ -64,13 +64,13 @@ def woman():
     cursor.close()
     conn.close()
 
-    # Group by category
+    
     grouped_services = {}
     for service in services:
         category = service['category']
         grouped_services.setdefault(category, []).append(service)
 
-    # ✅ Ensure grouped_services is passed to the template
+  
     return render_template("woman.html", grouped_services=grouped_services)
 
 
@@ -101,13 +101,13 @@ def book_appointment():
         payment_method = request.form.get('payment_method')
         payment_details = request.form.get('payment_details')
 
-        # ✅ Safely convert total amount
+        
         try:
             total_amount = float(request.form.get('total_amount', 0))
         except (ValueError, TypeError):
             return jsonify({"status": "error", "message": "Invalid total amount"}), 400
 
-        # Insert into DB
+        
         conn = get_db_connection()
         cursor = conn.cursor()
         insert_query = """
@@ -135,8 +135,7 @@ def get_total_price():
     try:
         data = request.get_json()
         gender = data.get('gender')
-        selected_services = data.get('services')  # ✅ Must match frontend key
-
+        selected_services = data.get('services') 
         if not gender or not selected_services:
             return jsonify({'status': 'error', 'message': 'Gender and services are required'}), 400
 
@@ -162,18 +161,11 @@ def get_total_price():
         print("❌ Error in get_total_price:", e)
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
-
-
-
-
-
-
-    # 🔐 Fixed credentials (can be moved to environment variables)
+  
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'pass123'
 
-# Session config (optional but recommended)
+
 app.permanent_session_lifetime = timedelta(minutes=30)
 
 
@@ -185,16 +177,16 @@ def admin():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Fetch all services
+
     cursor.execute("SELECT * FROM service")
     services = cursor.fetchall()
 
-    # Get filter parameters from request
+   
     name = request.args.get('name', '').strip()
     phone = request.args.get('phone', '').strip()
     date = request.args.get('date', '').strip()
 
-    # Build base query
+   
     query = "SELECT * FROM appointment WHERE 1=1"
     params = []
 
