@@ -1,0 +1,95 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Michroma&family=Savate:ital,wght@0,200..900;1,200..900&family=WDXL+Lubrifont+SC&display=swap');
+
+body {
+  background-color: rgb(250, 248, 248); /* or transparent if you prefer no color */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif; /* optional, for a clean font */
+}
+#font{
+    
+    font-family: "Michroma", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.8rem;
+    color: #333;
+
+}
+.quotesfont{
+font-family: "Michroma", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+}
+.page-title {
+  text-align: center;           /* center title */
+  font-size: 2rem;
+  margin: 40px 0;
+  font-weight: bold;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  gap: 100px;            /* space between columns */
+  padding: 40px 20px;
+  flex-wrap: wrap;       /* allow wrapping on smaller screens */
+  align-items: flex-start;
+  text-align: center;
+}
+
+.category-column img {
+  width: 100%;           /* Fill the container width */
+  height: 550px;         /* Set a fixed height that matches both images */
+  object-fit: cover;     /* Crops image proportionally to fit the box */
+  border-radius: 10px;   /* Rounded corners if desired */
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.category-column img:hover {
+  transform: scale(1.05); /* Zoom on hover */
+}
+
+
+.category-column img:hover {
+  transform: scale(1.05);
+}
+.disclaimer {
+  text-align: center;
+  color: #555;
+  font-size: 1rem;
+  margin-top: 10px;
+  font-style: italic;
+}
+.next-arrow {
+  position: fixed;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.next-arrow img {
+  width: 50px;  /* adjust as needed */
+  height: auto;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.next-arrow img:hover {
+  opacity: 0.8;
+  transform: scale(1.1); /* subtle enlarge on hover */
+}
+.next-arrow img {
+  width: 48px;
+  height: auto;
+  animation: bounce 1.2s infinite;
+}
+
+
+
+
+
+
+

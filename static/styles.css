@@ -1,0 +1,316 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Michroma&family=Savate:ital,wght@0,200..900;1,200..900&family=Sniglet:wght@400;800&family=WDXL+Lubrifont+SC&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Michroma&family=Savate:ital,wght@0,200..900;1,200..900&family=Sniglet:wght@400;800&family=Sofia+Sans+Extra+Condensed:ital,wght@0,1..1000;1,1..1000&family=WDXL+Lubrifont+SC&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #fff7f7;
+}
+
+.michroma-regular {
+    font-family: "Michroma", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #eee;
+
+    
+ 
+}
+
+
+
+/* Links container */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* spacing between top level links */
+    position: relative;
+    font-family: "Michroma", sans-serif;
+    font-weight: 400;
+}
+
+/* Top-level link styles */
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color:rgb(136, 110, 63);
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+}
+
+/* Dropdown panel */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;             /* move its left edge to the middle of the parent */
+    transform: translateX(-50%); /* shift it left by 50% of its width to center */
+    background:white;
+    padding: 1rem;
+    display: none;
+    flex-wrap: wrap;
+    gap: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 600px;
+    z-index: 100;
+}
+
+
+/* Show the dropdown when hovering the Services link */
+.dropdown:hover .dropdown-menu {
+    display: flex;
+}
+
+/* Columns inside the dropdown */
+.service-column {
+    flex: 1 1 180px;
+    min-width: 180px;
+}
+
+.service-column h3 {
+    color:rgb(18, 18, 18);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #f0eded;
+    padding-bottom: 0.45rem;
+}
+
+.service-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-column ul li {
+    padding: 0.25rem 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.book-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;       /* normal color */
+    background: none;   /* no background normally */
+    transition: background 0.2s, color 0.2s;
+}
+
+.book-btn:active,
+.book-btn:focus {
+    background-color: #000;  /* background turns black on click/focus */
+    color: #fff;             /* white text */
+}
+.static-background {
+  min-height: 58vh;
+  background-image: url('/static/images/bg2.jpeg'); 
+/* your image path */
+  background-size: cover;         /* scale to cover the entire area */
+  background-repeat: no-repeat;   /* don’t repeat image */
+  background-position: center bottom; /* align image's bottom to section bottom */
+  
+  color: white;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+    position: relative;
+}
+.quote-box {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background: rgba(3, 3, 3, 0.9); /* semi-transparent so image is visible behind */
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+.next-arrow {
+  position: fixed;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.next-arrow img {
+  width: 50px;  /* adjust as needed */
+  height: auto;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.next-arrow img:hover {
+  opacity: 0.8;
+  transform: scale(1.1); /* subtle enlarge on hover */
+}
+.next-arrow img {
+  width: 48px;
+  height: auto;
+  animation: bounce 1.2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px); /* moves up by 8px */
+  }
+}
+.salon-section {
+  display: flex;
+  align-items: flex-start; /* Aligns to top */
+  padding: 2rem;
+  background: #f9f7f5;
+  gap: 3rem;
+}
+
+/* Left column width matches right column spacing */
+.salon-left {
+  flex: 1;
+  max-width: 30%; /* Controls left column width */
+  padding-left: 10%;
+}
+
+.salon-text {
+  font-family: "Michroma", sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  padding-top: 25%;
+}
+
+.hi {
+  font-family: "Michroma", sans-serif;
+  font-size: 150%;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Right column with video */
+.salon-video {
+  flex: 1;
+  max-width: 23%;
+  padding-top: 5%;
+  padding-left: 10%;
+}
+
+.salon-video video {
+  width: 100%;
+  border-radius: 10px;
+  height: auto;
+}
+
+/* Fixed full-screen background section */
+.fixed-bg-section {
+  height: 50vh; 
+  background: url('/static/images/scrolll.jpeg') center center no-repeat;
+  background-size: cover;       /* Fill the viewport */
+  background-attachment: fixed; /* Keeps image fixed during scroll */
+  position: relative;
+}
+
+/* Scrollable content sections */
+.content-section {
+  padding: 3rem 2rem;
+  background: white; 
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f7f5;
+  margin: 0;
+  padding: 0;
+}
+
+.features-section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.features-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+  color: #333;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-box {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+}
+
+.feature-box img {
+  width: 60px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.feature-box h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.feature-box p {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+#mi{
+ width:80px;
+}
+
+
+
+
+
