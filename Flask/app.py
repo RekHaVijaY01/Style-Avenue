@@ -45,13 +45,13 @@ def men():
     cursor.close()
     conn.close()
 
-    # Group by category
+  
     grouped_services = {}
     for service in services:
         category = service['category']
         grouped_services.setdefault(category, []).append(service)
 
-    # ✅ pass grouped_services to the template
+   
     return render_template("men.html", grouped_services=grouped_services)
 
 
@@ -64,13 +64,13 @@ def woman():
     cursor.close()
     conn.close()
 
-    # Group by category
+    
     grouped_services = {}
     for service in services:
         category = service['category']
         grouped_services.setdefault(category, []).append(service)
 
-    # ✅ Ensure grouped_services is passed to the template
+   
     return render_template("woman.html", grouped_services=grouped_services)
 
 
@@ -101,13 +101,13 @@ def book_appointment():
         payment_method = request.form.get('payment_method')
         payment_details = request.form.get('payment_details')
 
-        # ✅ Safely convert total amount
+  
         try:
             total_amount = float(request.form.get('total_amount', 0))
         except (ValueError, TypeError):
             return jsonify({"status": "error", "message": "Invalid total amount"}), 400
 
-        # Insert into DB
+       
         conn = get_db_connection()
         cursor = conn.cursor()
         insert_query = """
@@ -161,19 +161,11 @@ def get_total_price():
     except Exception as e:
         print("❌ Error in get_total_price:", e)
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
-
-
-
-
-
-
-
-    # 🔐 Fixed credentials (can be moved to environment variables)
+ 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'pass123'
 
-# Session config (optional but recommended)
+
 app.permanent_session_lifetime = timedelta(minutes=30)
 
 
@@ -185,16 +177,16 @@ def admin():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Fetch all services
+   
     cursor.execute("SELECT * FROM service")
     services = cursor.fetchall()
 
-    # Get filter parameters from request
+    
     name = request.args.get('name', '').strip()
     phone = request.args.get('phone', '').strip()
     date = request.args.get('date', '').strip()
 
-    # Build base query
+   
     query = "SELECT * FROM appointment WHERE 1=1"
     params = []
 
@@ -272,11 +264,11 @@ def admin_dashboard():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # Fetch services from 'service' table
+       
         cursor.execute("SELECT * FROM service")
         services = cursor.fetchall()
 
-        # Fetch appointments with payment info
+      
         cursor.execute("""
             SELECT name, phone, gender, appointment_date, appointment_time,
                    sub_services, total_amount, payment_method, payment_details
